@@ -128,10 +128,13 @@ q_values[state][action] += lr * td_error
   - Superficie 3D: Valor esperado de cada estado
   - Mapa de calor: Acción óptima (Verde=Hit, Gris=Stick)
 
-### Rendimiento Típico (500k episodios)
-Win rate: 40.90%
-Loss rate: 50.54%
-Draw rate: 8.56%
+### Rendimiento Típico
+
+ 500k episodios
+
+- Win rate: 40.90%
+- Loss rate: 50.54%
+- Draw rate: 8.56%
 
 ---
 
