@@ -44,6 +44,7 @@ Puedes instalarlas utilizando pip. Por ejemplo:
 
 ```bash
 pip install gymnasium matplotlib seaborn numpy tqdm termcolor
+````
 ---
 
 ## Uso
