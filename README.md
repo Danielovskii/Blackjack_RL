@@ -5,7 +5,7 @@
 - Iñigo de Obeso Landeros
 - Daniel Sánchez López
 
-## Agente de Blackjack con DQLearning
+## Agente de Blackjack
 
 Este repositorio contiene el código de un agente de aprendizaje por refuerzo que aprende a jugar Blackjack mediante Q-Learning. El agente se entrena utilizando un diccionario de valores Q y, además, se visualiza la política y los valores de los estados mediante gráficos interactivos. También se incluyen funciones para ejecutar partidas de forma interactiva y evaluar el desempeño del agente.
 
