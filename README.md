@@ -44,14 +44,14 @@ Puedes instalarlas utilizando pip. Por ejemplo:
 
 ```bash
 pip install gymnasium matplotlib seaborn numpy tqdm termcolor
-````
+```
 ---
 
 ## Uso
 
 ### Entrenamiento del agente
 
-``python
+```python
 n_episodes = 500_000
 learning_rate = 0.1
 epsilon_decay = start_epsilon/(n_episodes/2)
@@ -62,11 +62,11 @@ agent = BlackjackAgent(
     epsilon_decay=epsilon_decay,
     final_epsilon=final_epsilon
 )
-``
+```
 
 ### Visualización de la Política
 
-``python
+```python
 # Política con As usable
 value_grid, policy_grid = create_grids(agent, usable_ace=True)
 create_plots(value_grid, policy_grid, title="With usable ace")
@@ -74,14 +74,14 @@ create_plots(value_grid, policy_grid, title="With usable ace")
 # Política sin As usable
 value_grid, policy_grid = create_grids(agent, usable_ace=False)
 create_plots(value_grid, policy_grid, title="Without usable ace")
-``
+```
 
 ### Jugar Interactivamente
 
-``python
+```python
 # Jugar 3 partidas con renderizado
 play_blackjack(agent, episodes=3, render_delay=1.0)
-``
+```
 
 ---
 
@@ -100,11 +100,11 @@ play_blackjack(agent, episodes=3, render_delay=1.0)
 
 3. Actualización Q-Learning:
 
-``python
+```python
 future_q = (1 - terminated) * max(q_values[next_state])
 td_error = reward + gamma * future_q - q_values[state][action]
 q_values[state][action] += lr * td_error
-``
+```
 
 ---
 
