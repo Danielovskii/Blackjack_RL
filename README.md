@@ -1,8 +1,8 @@
 # Blackjack
 
-# Agente de Blackjack con DQLearning
+## Agente de Blackjack con DQLearning
 
-Este repositorio contiene el código de un agente de aprendizaje por refuerzo que aprende a jugar Blackjack mediante Q-Learning. Se entrena al agente utilizando un diccionario de valores Q y se visualiza la política y los valores del estado con gráficos. Además, se incluye una función interactiva para ejecutar partidas en modo visual y otra para evaluar el desempeño del agente.
+Este repositorio contiene el código de un agente de aprendizaje por refuerzo que aprende a jugar Blackjack mediante Q-Learning. El agente se entrena utilizando un diccionario de valores Q y, además, se visualiza la política y los valores de los estados mediante gráficos interactivos. También se incluyen funciones para ejecutar partidas de forma interactiva y evaluar el desempeño del agente.
 
 ---
 
@@ -10,20 +10,22 @@ Este repositorio contiene el código de un agente de aprendizaje por refuerzo qu
 
 - [Descripción](#descripción)
 - [Dependencias e Instalación](#dependencias-e-instalación)
-- [Ejecución del Código](#ejecución-del-código)
-- [Estructura y Funcionamiento del Código](#estructura-y-funcionamiento-del-código)
-  - [Inicialización y Configuración del Entorno](#inicialización-y-configuración-del-entorno)
-  - [Definición del Agente](#definición-del-agente)
+- [Uso](#uso)
   - [Entrenamiento del Agente](#entrenamiento-del-agente)
-  - [Visualización de la Política y Valores de Estado](#visualización-de-la-política-y-valores-de-estado)
-  - [Ejecutar y Evaluar Partidas](#ejecutar-y-evaluar-partidas)
+  - [Visualización de la Política](#visualización-de-la-política)
+  - [Juego Interactivo](#juego-interactivo)
+- [Implementación](#implementación)
+  - [Componentes Clave del Agente](#componentes-clave-del-agente)
+- [Resultados](#resultados)
+  - [Política Aprendida y Gráficos](#política-aprendida-y-gráficos)
+  - [Rendimiento Típico](#rendimiento-típico)
 - [Licencia](#licencia)
 
 ---
 
 ## Descripción
 
-El código utiliza el entorno `Blackjack-v1` de Gymnasium (con las reglas SAB habilitadas) para entrenar un agente que aprende a jugar Blackjack. El agente utiliza Q-Learning para actualizar sus estimaciones de la función de valor de cada acción en cada estado, almacenando los valores en un diccionario. Además, se generan gráficos 3D y mapas de calor para visualizar el valor del estado y la política óptima aprendida, diferenciando entre estados con o sin un as utilizable.
+El código utiliza el entorno `Blackjack-v1` de Gymnasium (con las reglas SAB habilitadas) para entrenar un agente que aprende a jugar Blackjack. El agente actualiza sus estimaciones de la función de valor de cada acción en cada estado mediante Q-Learning, almacenando los valores en un diccionario. Además, se generan gráficos 3D y mapas de calor que permiten visualizar tanto el valor esperado de cada estado como la acción óptima (política) aprendida, diferenciando entre estados en los que se posee un as utilizable y aquellos en los que no.
 
 ---
 
@@ -42,5 +44,87 @@ Puedes instalarlas utilizando pip. Por ejemplo:
 
 ```bash
 pip install gymnasium matplotlib seaborn numpy tqdm termcolor
+---
 
---- 
+## Uso
+
+### Entrenamiento del agente
+
+``python
+n_episodes = 500_000
+learning_rate = 0.1
+epsilon_decay = start_epsilon/(n_episodes/2)
+
+agent = BlackjackAgent(
+    learning_rate=learning_rate,
+    initial_epsilon=start_epsilon,
+    epsilon_decay=epsilon_decay,
+    final_epsilon=final_epsilon
+)
+``
+
+### Visualización de la Política
+
+``python
+# Política con As usable
+value_grid, policy_grid = create_grids(agent, usable_ace=True)
+create_plots(value_grid, policy_grid, title="With usable ace")
+
+# Política sin As usable
+value_grid, policy_grid = create_grids(agent, usable_ace=False)
+create_plots(value_grid, policy_grid, title="Without usable ace")
+``
+
+### Jugar Interactivamente
+
+``python
+# Jugar 3 partidas con renderizado
+play_blackjack(agent, episodes=3, render_delay=1.0)
+``
+
+---
+
+## Implementación
+
+### Componentes claves del agente
+
+1. Q-Table:
+  - Diccionario de estados -> valores de acciones
+  - q_values[ (player_sum, dealer_card, usable_ace) ] = [Q(stick), Q(hit)]
+
+2. Exploración epsilon-greedy:
+  - epsilon inicial: 1.0 (100% exploración)
+  - epsilon final: 0.1 (10% exploración)
+  - Decaimiento lineal durante el entrenamiento
+
+3. Actualización Q-Learning:
+
+``python
+future_q = (1 - terminated) * max(q_values[next_state])
+td_error = reward + gamma * future_q - q_values[state][action]
+q_values[state][action] += lr * td_error
+``
+
+---
+
+## Resultados
+
+### Política aprendida
+
+### Interpretación de gráficos
+  - Superficie 3D: Valor esperado de cada estado
+  - Mapa de calor: Acción óptima (Verde=Hit, Gris=Stick)
+
+### Rendimiento típico (500k episodios):
+Win rate: 40.90%
+Loss rate: 50.54%
+Draw rate: 8.56%
+
+---
+
+## Licencia
+
+Este proyecto es de uso público y se puede utilizar y modificar libremente para fines educativos y de investigación.
+
+**Nota**: Basado en el ejemplo de Blackjack de Gymnasium y el libro "Reinforcement Learning: An Introduction" de Sutton y Barto.
+
